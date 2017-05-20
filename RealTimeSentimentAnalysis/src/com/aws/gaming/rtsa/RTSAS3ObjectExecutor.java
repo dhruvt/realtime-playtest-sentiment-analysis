@@ -12,26 +12,26 @@ import com.amazonaws.services.rekognition.model.FaceDetail;
 import com.aws.gaming.rekognition.DetectFaceInterface;
 import com.aws.gaming.rekognition.DetectFaceInterfaceImpl;
 import com.aws.gaming.rtsa.data.RTSADataPoint;
+import com.aws.gaming.rtsa.data.S3Location;
 
-public class RTSALocalFileExecutor implements RTSAExecutorInterface {
+public class RTSAS3ObjectExecutor implements RTSAExecutorInterface {
 
 	@Override
 	public List<RTSADataPoint> runFacialAnalysis(List<Object> framesList)
 			throws InterruptedException, ExecutionException {
-		
 		@SuppressWarnings("unchecked")
-		List<String> fileNames = (List<String>)(Object)framesList;
+		List<S3Location> fileNames = (List<S3Location>)(Object)framesList;
 		int threads = Runtime.getRuntime().availableProcessors();
 		ExecutorService service = Executors.newFixedThreadPool(threads);
 		
 		List<Future<RTSADataPoint>> futures = new ArrayList<Future<RTSADataPoint>>();
-		for(final String frame:fileNames){
+		for(final S3Location frameLocation:fileNames){
 			Callable<RTSADataPoint> callable = new Callable<RTSADataPoint>(){
 				public RTSADataPoint call() throws Exception{
 					DetectFaceInterface dfi = new DetectFaceInterfaceImpl();
-					List<FaceDetail> faceDetails = dfi.detectFaceFromLocalFile(frame);
-					String fileName = frame.replaceFirst("[.][^.]+$", "");
-					return new RTSADataPoint(faceDetails, Long.parseLong(fileName));
+					List<FaceDetail> faceDetails = dfi.detectFaceFromS3(frameLocation.getBucketName(), frameLocation.getFileName());
+					String filename = frameLocation.getFileName().replaceFirst("[.][^.]+$", "");
+					return new RTSADataPoint(faceDetails, Long.parseLong(filename));
 					
 				}
 			};
@@ -46,7 +46,5 @@ public class RTSALocalFileExecutor implements RTSAExecutorInterface {
 		}
 		return datapoints;
 	}
-	
-	
 
 }

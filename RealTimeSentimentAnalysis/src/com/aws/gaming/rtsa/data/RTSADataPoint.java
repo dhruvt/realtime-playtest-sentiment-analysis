@@ -13,6 +13,11 @@ public class RTSADataPoint implements Comparable<RTSADataPoint>{
 		this.faceDetails=faceDetails;
 		this.timestamp = new Long(System.currentTimeMillis());
 	}
+	
+	public RTSADataPoint(List<FaceDetail> faceDetails, Long timestamp){
+		this.faceDetails=faceDetails;
+		this.timestamp = timestamp;
+	}
 
 	public Long getTimestamp() {
 		return timestamp;
