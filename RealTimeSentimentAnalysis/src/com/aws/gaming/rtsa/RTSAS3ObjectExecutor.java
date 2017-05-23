@@ -30,9 +30,9 @@ public class RTSAS3ObjectExecutor implements RTSAExecutorInterface {
 				public RTSADataPoint call() throws Exception{
 					DetectFaceInterface dfi = new DetectFaceInterfaceImpl();
 					List<FaceDetail> faceDetails = dfi.detectFaceFromS3(frameLocation.getBucketName(), frameLocation.getFileName());
-					String filename = frameLocation.getFileName().replaceFirst("[.][^.]+$", "");
-					return new RTSADataPoint(faceDetails, Long.parseLong(filename));
-					
+					String fileName = frameLocation.getFileName().replaceFirst("[.][^.]+$", "");
+					Float sentiment = RTSACalculator.calculateSentinementFromEmotions(faceDetails.get(0).getEmotions());
+					return new RTSADataPoint(faceDetails, Long.parseLong(fileName),sentiment);
 				}
 			};
 			futures.add(service.submit(callable));

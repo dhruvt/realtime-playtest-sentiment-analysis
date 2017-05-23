@@ -8,15 +8,18 @@ public class RTSADataPoint implements Comparable<RTSADataPoint>{
 	
 	public Long timestamp;
 	public List<FaceDetail> faceDetails;
+	public Float sentimentValue;
 	
-	public RTSADataPoint(List<FaceDetail> faceDetails){
+	public RTSADataPoint(List<FaceDetail> faceDetails, Float sentimentValue){
 		this.faceDetails=faceDetails;
 		this.timestamp = new Long(System.currentTimeMillis());
+		this.sentimentValue = sentimentValue;
 	}
 	
-	public RTSADataPoint(List<FaceDetail> faceDetails, Long timestamp){
+	public RTSADataPoint(List<FaceDetail> faceDetails, Long timestamp, Float sentimentValue){
 		this.faceDetails=faceDetails;
 		this.timestamp = timestamp;
+		this.sentimentValue = sentimentValue;
 	}
 
 	public Long getTimestamp() {
@@ -33,6 +36,14 @@ public class RTSADataPoint implements Comparable<RTSADataPoint>{
 
 	public void setFaceDetails(List<FaceDetail> faceDetails) {
 		this.faceDetails = faceDetails;
+	}
+		
+	public Float getSentimentValue() {
+		return sentimentValue;
+	}
+
+	public void setSentimentValue(Float sentimentValue) {
+		this.sentimentValue = sentimentValue;
 	}
 
 	@Override

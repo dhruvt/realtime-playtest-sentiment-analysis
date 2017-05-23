@@ -31,7 +31,8 @@ public class RTSALocalFileExecutor implements RTSAExecutorInterface {
 					DetectFaceInterface dfi = new DetectFaceInterfaceImpl();
 					List<FaceDetail> faceDetails = dfi.detectFaceFromLocalFile(frame);
 					String fileName = frame.replaceFirst("[.][^.]+$", "");
-					return new RTSADataPoint(faceDetails, Long.parseLong(fileName));
+					Float sentiment = RTSACalculator.calculateSentinementFromEmotions(faceDetails.get(0).getEmotions());
+					return new RTSADataPoint(faceDetails, Long.parseLong(fileName),sentiment);
 					
 				}
 			};
