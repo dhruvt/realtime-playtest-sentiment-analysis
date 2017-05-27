@@ -6,7 +6,7 @@ import com.amazonaws.services.rekognition.model.Emotion;
 
 public class RTSACalculator {
 	
-	public static Float calculateSentinementFromEmotions(List<Emotion> emotions){
+	public Float calculateSentinementFromEmotions(List<Emotion> emotions){
 		
 		Float sentiment = new Float(0.00);
 		
