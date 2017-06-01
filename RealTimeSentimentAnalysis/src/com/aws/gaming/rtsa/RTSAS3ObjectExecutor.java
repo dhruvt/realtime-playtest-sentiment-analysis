@@ -14,8 +14,21 @@ import com.aws.gaming.rekognition.DetectFaceInterfaceImpl;
 import com.aws.gaming.rtsa.data.RTSADataPoint;
 import com.aws.gaming.rtsa.data.S3Location;
 
+
+/**
+ * RTSAS3ObjectExecutor.java
+ * 
+ * Implementation of the RTSAExecutorInterface Interface, this implementation runs the Amazon Rekognition
+ * algorithm on a series of frames that are stored on a remote S3 bucket. 
+ * 
+ * @author dhruv
+ *
+ */
 public class RTSAS3ObjectExecutor implements RTSAExecutorInterface {
 
+	/* (non-Javadoc)
+	 * @see com.aws.gaming.rtsa.RTSAExecutorInterface#runFacialAnalysis(java.util.List)
+	 */
 	@Override
 	public List<RTSADataPoint> runFacialAnalysis(List<Object> framesList)
 			throws InterruptedException, ExecutionException {

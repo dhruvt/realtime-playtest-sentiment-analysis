@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 /**
+ * RTSAConfig.java
+ * 
  * Singleton helper class that holds all the configuration values for the RTSA system
  * 
  * @author dhruv

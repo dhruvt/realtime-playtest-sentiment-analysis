@@ -5,6 +5,8 @@ import java.util.List;
 import com.amazonaws.services.rekognition.model.FaceDetail;
 
 /**
+ * DetectFaceInterface.java
+ * 
  * An Interface that defines the supported methods of doing facial analysis on image files.
  * This can be extended as more mediums are supported later on within the Rekognition API
  * 

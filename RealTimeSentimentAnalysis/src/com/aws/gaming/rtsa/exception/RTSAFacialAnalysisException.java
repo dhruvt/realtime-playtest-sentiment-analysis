@@ -1,5 +1,13 @@
 package com.aws.gaming.rtsa.exception;
 
+/**
+ * RTSAFacialAnalysisException.ajav
+ * 
+ * Custom exception class for RTSAFacialAnalysis executions
+ * 
+ * @author dhruv
+ *
+ */
 public class RTSAFacialAnalysisException extends Exception {
 
 	/**
