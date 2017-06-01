@@ -39,12 +39,7 @@ public class RTSACalculator {
 			}			
 			
 		}
-		
-		if(sentiment.longValue()>1)
-			sentiment = new Float(1.00);
-		if(sentiment<-1)
-			sentiment = new Float(-1.00);
-		
+			
 		return sentiment;
 	}
 

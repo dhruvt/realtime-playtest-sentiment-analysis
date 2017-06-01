@@ -31,6 +31,7 @@ public class DetectFaceInterfaceImpl implements DetectFaceInterface {
 		try{
 			ProfileCredentialsProvider pcp = new ProfileCredentialsProvider("default");
 			credentials = pcp.getCredentials();
+			System.out.println("Initializing Rekognition Client.....Please wait as this takes time!");
 		}catch (Exception e){
 			throw new AmazonClientException("Cannot load the credentials from the credential profiles file. "
 		            + "Please make sure that your credentials file is at the correct "

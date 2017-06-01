@@ -3,6 +3,8 @@ package com.aws.gaming.rtsa.video;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -20,14 +22,15 @@ public class VideoToFramesConvertor {
     private static long mLastPtsWrite = Global.NO_PTS;
     public static final long MICRO_SECONDS_BETWEEN_FRAMES =
             (long)(Global.DEFAULT_PTS_PER_SECOND * SECONDS_BETWEEN_FRAMES);
+    private static List<String> frameFilesList = new ArrayList<String>();
 
-
-	public void convertVideoToFrames(String fileName){
+	public List<String> convertVideoToFrames(String fileName){
 		
         IMediaReader mediaReader = ToolFactory.makeReader(fileName);
         mediaReader.setBufferedImageTypeToGenerate(BufferedImage.TYPE_3BYTE_BGR);
         mediaReader.addListener(new ImageSnapListener());
         while (mediaReader.readPacket() == null) ;
+        return frameFilesList;
 	}
 	
     private static class ImageSnapListener extends MediaListenerAdapter {
@@ -53,6 +56,7 @@ public class VideoToFramesConvertor {
                 System.out.printf(
                         "at elapsed time of %6.3f seconds wrote: %s\n",
                         seconds, outputFilename);
+                frameFilesList.add(outputFilename);
                 mLastPtsWrite += MICRO_SECONDS_BETWEEN_FRAMES;
 
             }
