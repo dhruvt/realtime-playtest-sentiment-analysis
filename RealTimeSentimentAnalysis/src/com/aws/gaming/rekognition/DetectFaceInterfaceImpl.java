@@ -23,6 +23,18 @@ import com.amazonaws.services.rekognition.model.S3Object;
 import com.amazonaws.util.IOUtils;
 
 
+/**
+ * DetectFaceInterfaceImpl.java
+ * 
+ * Implementation of the DetectFaceInterface, provide two methods
+ * detectFaceFromS3: This will detect images stored within S3
+ * detectFaceFromLocalFile: This will detect images stored within the local file system
+ * 
+ * Images supported for facial detection should either be in .png or .jpg format
+ * 
+ * @author dhruv
+ *
+ */
 public class DetectFaceInterfaceImpl implements DetectFaceInterface {
 	
 	private AWSCredentials credentials;
@@ -30,8 +42,7 @@ public class DetectFaceInterfaceImpl implements DetectFaceInterface {
 	public DetectFaceInterfaceImpl() throws AmazonClientException{
 		try{
 			ProfileCredentialsProvider pcp = new ProfileCredentialsProvider("default");
-			credentials = pcp.getCredentials();
-			System.out.println("Initializing Rekognition Client.....Please wait as this takes time!");
+			credentials = pcp.getCredentials();			
 		}catch (Exception e){
 			throw new AmazonClientException("Cannot load the credentials from the credential profiles file. "
 		            + "Please make sure that your credentials file is at the correct "
@@ -39,6 +50,9 @@ public class DetectFaceInterfaceImpl implements DetectFaceInterface {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.aws.gaming.rekognition.DetectFaceInterface#detectFaceFromS3(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public List<FaceDetail> detectFaceFromS3(String bucket, String file) throws AmazonRekognitionException{
 		AmazonRekognition arc =  AmazonRekognitionClientBuilder.standard()
@@ -58,6 +72,9 @@ public class DetectFaceInterfaceImpl implements DetectFaceInterface {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.aws.gaming.rekognition.DetectFaceInterface#detectFaceFromLocalFile(java.lang.String)
+	 */
 	@Override
 	public List<FaceDetail> detectFaceFromLocalFile(String filePath) {
 		try{

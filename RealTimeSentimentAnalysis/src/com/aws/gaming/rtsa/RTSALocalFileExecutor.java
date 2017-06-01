@@ -23,7 +23,7 @@ public class RTSALocalFileExecutor implements RTSAExecutorInterface {
 		List<String> fileNames = (List<String>)(Object)framesList;
 		int threads = Runtime.getRuntime().availableProcessors();
 		ExecutorService service = Executors.newFixedThreadPool(threads);
-		
+		System.out.println("Initializing Facial Analysis.....Please wait as this takes time!");
 		List<Future<RTSADataPoint>> futures = new ArrayList<Future<RTSADataPoint>>();
 		for(final String frame:fileNames){
 			Callable<RTSADataPoint> callable = new Callable<RTSADataPoint>(){

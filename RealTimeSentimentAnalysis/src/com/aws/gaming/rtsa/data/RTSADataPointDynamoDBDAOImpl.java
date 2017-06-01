@@ -8,6 +8,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 public class RTSADataPointDynamoDBDAOImpl implements RTSADataPointDAO {
 
+	/* (non-Javadoc)
+	 * @see com.aws.gaming.rtsa.data.RTSADataPointDAO#save(com.aws.gaming.rtsa.data.RTSADataPoint)
+	 */
 	@Override
 	public void save(RTSADataPoint rtsaDataPoint) {
 		

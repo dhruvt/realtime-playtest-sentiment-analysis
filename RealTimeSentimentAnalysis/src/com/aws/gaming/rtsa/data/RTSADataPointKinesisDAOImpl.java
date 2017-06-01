@@ -6,6 +6,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.kinesis.AmazonKinesis;
 import com.amazonaws.services.kinesis.AmazonKinesisClientBuilder;
 import com.amazonaws.services.kinesis.model.PutRecordRequest;
+import com.aws.gaming.RTSAConfig;
 
 public class RTSADataPointKinesisDAOImpl implements RTSADataPointDAO {
 
@@ -16,7 +17,7 @@ public class RTSADataPointKinesisDAOImpl implements RTSADataPointDAO {
 		
 		AmazonKinesis kinesisClient = AmazonKinesisClientBuilder.standard().withRegion(Regions.US_WEST_2).build();
 		PutRecordRequest putRecordRequest = new PutRecordRequest();
-		putRecordRequest.setStreamName("RTSADataPoints");
+		putRecordRequest.setStreamName(RTSAConfig.getProperty("kinesisStreamName"));
 		putRecordRequest.setData(ByteBuffer.wrap(record.getBytes()));
 		putRecordRequest.setPartitionKey(rtsaDataPoint.getTimestamp().toString());
 		
