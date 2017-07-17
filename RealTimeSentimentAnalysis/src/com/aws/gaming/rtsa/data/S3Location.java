@@ -6,7 +6,6 @@ public class S3Location {
 	public String fileName;
 	
 	public S3Location(String bucketName, String fileName) {
-		super();
 		this.bucketName = bucketName;
 		this.fileName = fileName;
 	}

@@ -46,7 +46,8 @@ public class RTSAS3ObjectExecutor implements RTSAExecutorInterface {
 					String fileName = frameLocation.getFileName().replaceFirst("[.][^.]+$", "");
 					RTSACalculator rtsaCalculator = new RTSACalculator();
 					Float sentiment = rtsaCalculator.calculateSentinementFromEmotions(faceDetails.get(0).getEmotions());
-					return new RTSADataPoint(faceDetails, Long.parseLong(fileName),sentiment);
+					String emotion = rtsaCalculator.getPredominantEmotion(faceDetails.get(0).getEmotions());
+					return new RTSADataPoint(emotion, Long.parseLong(fileName),sentiment);
 				}
 			};
 			futures.add(service.submit(callable));

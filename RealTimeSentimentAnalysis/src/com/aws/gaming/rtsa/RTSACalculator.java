@@ -55,5 +55,9 @@ public class RTSACalculator {
 			
 		return sentiment;
 	}
+	
+	public String getPredominantEmotion(List<Emotion> emotions){
+		return null;
+	}
 
 }

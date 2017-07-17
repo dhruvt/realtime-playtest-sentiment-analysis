@@ -1,33 +1,28 @@
 package com.aws.gaming.rtsa.data;
 
-import java.util.List;
-
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.rekognition.model.FaceDetail;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @DynamoDBTable(tableName="RTSADataPoint")
 public class RTSADataPoint implements Comparable<RTSADataPoint>{
 	
 	public Long timestamp;
-	public List<FaceDetail> faceDetails;
-	public Float sentimentValue;
-	public String emotionDetailsString;
+	public String emotion;
+	public Float confidence;
 	
-	public RTSADataPoint(List<FaceDetail> faceDetails, Float sentimentValue){
-		this.faceDetails=faceDetails;
+	
+	public RTSADataPoint(String emotion, Float confidence){
+		this.emotion=emotion;
 		this.timestamp = new Long(System.currentTimeMillis());
-		this.sentimentValue = sentimentValue;
-		this.emotionDetailsString = faceDetails.get(0).getEmotions().toString();
+		this.confidence = confidence;		
 	}
 	
-	public RTSADataPoint(List<FaceDetail> faceDetails, Long timestamp, Float sentimentValue){
-		this.faceDetails=faceDetails;
+	public RTSADataPoint(String emotion, Long timestamp, Float confidence){
+		this.emotion=emotion;
 		this.timestamp = timestamp;
-		this.sentimentValue = sentimentValue;
-		this.emotionDetailsString = faceDetails.get(0).getEmotions().toString();
+		this.confidence = confidence;		
 	}
 
 	@DynamoDBHashKey(attributeName="Timestamp")
@@ -38,33 +33,25 @@ public class RTSADataPoint implements Comparable<RTSADataPoint>{
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
-
-	@DynamoDBIgnore
-	public List<FaceDetail> getFaceDetails() {
-		return faceDetails;
-	}
-
-	public void setFaceDetails(List<FaceDetail> faceDetails) {
-		this.faceDetails = faceDetails;
-	}
+	
 		
-	@DynamoDBAttribute(attributeName="Sentiment")
-	public Float getSentimentValue() {
-		return sentimentValue;
+	@DynamoDBAttribute(attributeName="Confidence")
+	public Float getConfidence() {
+		return confidence;
 	}
 
-	public void setSentimentValue(Float sentimentValue) {
-		this.sentimentValue = sentimentValue;
+	public void setConfidence(Float confidence) {
+		this.confidence = confidence;
 	}
 	
 	
-	@DynamoDBAttribute(attributeName="EmotionDetails")
-	public String getFaceDetailsString() {
-		return emotionDetailsString;
+	@DynamoDBAttribute(attributeName="Emotion")
+	public String getEmotion() {
+		return emotion;
 	}
 
-	public void setFaceDetailsString(String faceDetailsString) {
-		this.emotionDetailsString = faceDetailsString;
+	public void setEmotion(String emotion) {
+		this.emotion = emotion;
 	}
 
 	@Override
@@ -72,6 +59,14 @@ public class RTSADataPoint implements Comparable<RTSADataPoint>{
 		return this.timestamp.compareTo(arg0.getTimestamp());
 	}
 	
+	public String toJson(){
+		ObjectMapper mapper = new ObjectMapper();
+		try{
+			return mapper.writeValueAsString(this);
+		}catch(Exception e){			
+			return null;
+		}
+	}
 	
 
 }
