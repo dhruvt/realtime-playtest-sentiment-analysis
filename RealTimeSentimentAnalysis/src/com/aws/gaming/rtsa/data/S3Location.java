@@ -4,10 +4,12 @@ public class S3Location {
 	
 	public String bucketName;
 	public String fileName;
+	public String fileType;
 	
-	public S3Location(String bucketName, String fileName) {
+	public S3Location(String bucketName, String fileName, String fileType) {
 		this.bucketName = bucketName;
 		this.fileName = fileName;
+		this.fileType = fileType;
 	}
 
 	public String getBucketName() {
@@ -24,6 +26,14 @@ public class S3Location {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
 	}
 	
 }

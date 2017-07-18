@@ -1,5 +1,7 @@
 package com.aws.gaming.rtsa;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.amazonaws.services.rekognition.model.Emotion;
@@ -57,7 +59,15 @@ public class RTSACalculator {
 	}
 	
 	public String getPredominantEmotion(List<Emotion> emotions){
-		return null;
+		Collections.sort(emotions, new Comparator<Emotion>(){
+			public int compare(Emotion e1, Emotion e2){
+				if(e1.getConfidence()==e2.getConfidence())
+					return 0;
+				return e1.getConfidence()<e2.getConfidence()?-1:1;
+			}
+		});
+		
+		return emotions.get(0).getType();
 	}
 
 }
