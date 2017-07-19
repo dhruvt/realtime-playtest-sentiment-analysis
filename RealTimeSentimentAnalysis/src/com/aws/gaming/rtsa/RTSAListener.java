@@ -1,8 +1,8 @@
 package com.aws.gaming.rtsa;
 
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -15,6 +15,8 @@ import com.amazonaws.services.kinesis.clientlibrary.interfaces.IRecordProcessor;
 import com.amazonaws.services.kinesis.clientlibrary.interfaces.IRecordProcessorCheckpointer;
 import com.amazonaws.services.kinesis.clientlibrary.lib.worker.ShutdownReason;
 import com.amazonaws.services.kinesis.model.Record;
+import com.aws.gaming.rtsa.data.S3Location;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Processes records and checkpoints progress.
@@ -66,12 +68,18 @@ public class RTSAListener implements IRecordProcessor {
      * @param records Data records to be processed.
      */
     private void processRecordsWithRetries(List<Record> records) {
+    	String data = null;
+    	ObjectMapper mapper = new ObjectMapper();
+    	ArrayList<S3Location> s3Locations = new ArrayList<S3Location>();
+
         for (Record record : records) {
             boolean processedSuccessfully = false;
             for (int i = 0; i < NUM_RETRIES; i++) {
                 try {
                     
-                    processSingleRecord(record);
+                	data = decoder.decode(record.getData()).toString();
+                	S3Location s3Location =  mapper.readValue(data, S3Location.class);
+                	s3Locations.add(s3Location);                    
 
                     processedSuccessfully = true;
                     break;
@@ -91,6 +99,10 @@ public class RTSAListener implements IRecordProcessor {
                 LOG.error("Couldn't process record " + record + ". Skipping the record.");
             }
         }
+        
+        RTSARecordsProcessor recordsProcessor = new RTSARecordsProcessor(s3Locations);
+        Thread rpThread = new Thread(recordsProcessor);
+        rpThread.start();
     }
 
     /**
@@ -98,25 +110,7 @@ public class RTSAListener implements IRecordProcessor {
      * 
      * @param record The record to be processed.
      */
-    private void processSingleRecord(Record record) {
-        // TODO Add your own record processing logic here
-
-        String data = null;
-        try {
-            // For this app, we interpret the payload as UTF-8 chars.
-            data = decoder.decode(record.getData()).toString();
-            // Assume this record came from AmazonKinesisSample and log its age.
-            long recordCreateTime = new Long(data.substring("testData-".length()));
-            long ageOfRecordInMillis = System.currentTimeMillis() - recordCreateTime;
-
-            LOG.info(record.getSequenceNumber() + ", " + record.getPartitionKey() + ", " + data + ", Created "
-                    + ageOfRecordInMillis + " milliseconds ago.");
-        } catch (NumberFormatException e) {
-            LOG.info("Record does not match sample record format. Ignoring record with data; " + data);
-        } catch (CharacterCodingException e) {
-            LOG.error("Malformed data: " + data, e);
-        }
-    }
+    
 
     /**
      * {@inheritDoc}
